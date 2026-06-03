@@ -6,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'characters_screen.dart';
 import 'planets_screen.dart';
 import 'starships_screen.dart';
+import 'favorites_screen.dart';
 
 enum IntroPhase { ready, blueText, logo, crawl, panDown }
 
@@ -351,6 +352,17 @@ class MainDashboard extends StatelessWidget {
                     glowColor: const Color(0xFFFFE81F),
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const PlanetsScreen()));
+                    },
+                  ),
+
+                  const SizedBox(height: 25),
+                  _buildHudCard(
+                    title: "Tajne Archiwa",
+                    subtitle: "Zapisane dane offline",
+                    imageUrl: 'https://images.unsplash.com/photo-1533613220915-609f661a6fe1?q=80&w=1000',
+                    glowColor: Colors.greenAccent,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoritesScreen()));
                     },
                   ),
                 ],

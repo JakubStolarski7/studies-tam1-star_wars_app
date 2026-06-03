@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/starship_details.dart';
 import '../services/api_service.dart';
+import '../services/db_service.dart';
 
 class StarshipDetailsScreen extends StatefulWidget {
   final String uid;
@@ -15,12 +16,14 @@ class StarshipDetailsScreen extends StatefulWidget {
 class _StarshipDetailsScreenState extends State<StarshipDetailsScreen> {
   late Future<StarshipDetails> _detailsFuture;
   final ApiService _apiService = ApiService();
+  final DbService _dbService = DbService();
   bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     _detailsFuture = _apiService.getStarshipDetails(widget.uid);
+    _isFavorite = _dbService.isFavorite(uid: widget.uid, type: 'character');
   }
 
   @override
@@ -93,8 +96,25 @@ class _StarshipDetailsScreenState extends State<StarshipDetailsScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: _isFavorite ? Colors.blueAccent : Colors.grey.shade900,
         foregroundColor: Colors.white,
-        onPressed: () => setState(() => _isFavorite = !_isFavorite),
-        child: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border),
+        onPressed: () {
+          _dbService.toggleFavorite(uid: widget.uid, name: widget.name, type: 'planet');
+
+          setState(() {
+            _isFavorite = !_isFavorite;
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                _isFavorite ? 'Planeta dodana do ulubionych.' : 'Usunięto z ulubionych.',
+                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              backgroundColor: const Color(0xFFFFE81F),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        child: Icon(_isFavorite ? Icons.star : Icons.star_border),
       ),
     );
   }

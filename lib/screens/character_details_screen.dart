@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/character_details.dart';
 import '../services/api_service.dart';
+import '../services/db_service.dart';
 
 class CharacterDetailsScreen extends StatefulWidget {
   final String uid;
@@ -15,12 +16,14 @@ class CharacterDetailsScreen extends StatefulWidget {
 class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
   late Future<CharacterDetails> _detailsFuture;
   final ApiService _apiService = ApiService();
+  final DbService _dbService = DbService();
   bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     _detailsFuture = _apiService.getCharacterDetails(widget.uid);
+    _isFavorite = _dbService.isFavorite(uid: widget.uid, type: 'character');
   }
 
   @override
@@ -98,6 +101,9 @@ class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
         backgroundColor: _isFavorite ? Colors.redAccent : Colors.grey.shade900,
         foregroundColor: Colors.white,
         onPressed: () {
+
+          _dbService.toggleFavorite(uid: widget.uid, name: widget.name, type: 'character');
+
           setState(() {
             _isFavorite = !_isFavorite;
           });

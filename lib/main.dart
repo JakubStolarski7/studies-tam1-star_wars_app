@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'screens/splash_screen.dart';
+import 'package:flutter/gestures.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +11,15 @@ void main() async {
   await Hive.openBox('favorites');
 
   runApp(const StarWarsApp());
+}
+
+//Klasa do odswiezania myszką w przeglądarce
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
 
 class StarWarsApp extends StatelessWidget {

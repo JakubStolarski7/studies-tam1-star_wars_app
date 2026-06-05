@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/starship.dart';
 import '../services/api_service.dart';
 import 'starship_details_screen.dart';
+import '../services/analytics_service.dart';
+
 
 class StarshipsScreen extends StatefulWidget {
   const StarshipsScreen({super.key});
@@ -13,11 +15,13 @@ class StarshipsScreen extends StatefulWidget {
 class _StarshipsScreenState extends State<StarshipsScreen> {
   late Future<List<Starship>> _starshipsFuture;
   final ApiService _apiService = ApiService();
+  final AnalyticsService _analytics = AnalyticsService();
 
   @override
   void initState() {
     super.initState();
     _fetchData();
+    _analytics.logViewCategory('starships');
   }
 
   void _fetchData() {
@@ -56,6 +60,7 @@ class _StarshipsScreenState extends State<StarshipsScreen> {
             color: Colors.blueAccent,
             backgroundColor: Colors.black,
             onRefresh: () async {
+              _analytics.logManualRefresh('starships');
               _fetchData();
               await _starshipsFuture;
             },

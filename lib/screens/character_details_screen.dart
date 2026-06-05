@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/character_details.dart';
 import '../services/api_service.dart';
 import '../services/db_service.dart';
+import '../services/analytics_service.dart';
 
 class CharacterDetailsScreen extends StatefulWidget {
   final String uid;
@@ -17,6 +18,7 @@ class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
   late Future<CharacterDetails> _detailsFuture;
   final ApiService _apiService = ApiService();
   final DbService _dbService = DbService();
+  final AnalyticsService _analytics = AnalyticsService();
   bool _isFavorite = false;
 
   @override
@@ -79,6 +81,9 @@ class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
           setState(() {
             _isFavorite = !_isFavorite;
           });
+
+          _analytics.logToggleFavorite(widget.name, 'character', _isFavorite);
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(_isFavorite ? 'Dodano do ulubionych!' : 'Usunięto z ulubionych.'),

@@ -313,66 +313,27 @@ class MainDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int crossAxisCount = MediaQuery.of(context).size.width > 800 ? 2 : 1;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "DATAPAD REBELII",
-              style: TextStyle(
-                color: Color(0xFF4EE2EC),
-                fontSize: 28,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 2.0,
-              ),
-            ),
-            const SizedBox(height: 30),
+            const Text("DATAPAD REBELII", style: TextStyle(color: Color(0xFF4EE2EC), fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 2.0)),
+            const SizedBox(height: 20),
             Expanded(
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
+              child: GridView.count(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 2.5,
                 children: [
-                  _buildHudCard(
-                    title: "Baza Postaci",
-                    subtitle: "Jedi, Sithowie, Łowcy Nagród",
-                    imageUrl: 'https://images.unsplash.com/photo-1608346128025-1896b97a6fa7?q=80&w=1000',
-                    glowColor: Colors.redAccent,
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const CharactersScreen()));
-                    },
-                  ),
-                  const SizedBox(height: 25),
-                _buildHudCard(
-                  title: "Flota Gwiezdna",
-                  subtitle: "Myśliwce i Krążowniki",
-                  imageUrl: 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=1000',
-                  glowColor: Colors.blueAccent,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const StarshipsScreen()));
-                  },
-                ),
-                  const SizedBox(height: 25),
-                  _buildHudCard(
-                    title: "Atlas Planet",
-                    subtitle: "Systemy Zewnętrznych Rubieży",
-                    imageUrl: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1000',
-                    glowColor: const Color(0xFFFFE81F),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const PlanetsScreen()));
-                    },
-                  ),
-
-                  const SizedBox(height: 25),
-                  _buildHudCard(
-                    title: "Tajne Archiwa",
-                    subtitle: "Zapisane dane offline",
-                    imageUrl: 'https://images.unsplash.com/photo-1533613220915-609f661a6fe1?q=80&w=1000',
-                    glowColor: Colors.greenAccent,
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoritesScreen()));
-                    },
-                  ),
+                  _buildHudCard("Baza Postaci", "Jedi, Sithowie, Łowcy Nagród", 'https://images.unsplash.com/photo-1655983547113-ebd215417da9?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGFydGglMjB2YWRlcnxlbnwwfHwwfHx8MA%3D%3D', Colors.redAccent, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const CharactersScreen()))),
+                  _buildHudCard("Flota Gwiezdna", "Myśliwce i Krążowniki", 'https://images.unsplash.com/photo-1631282715105-5180652e52c1?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHN0YXIlMjB3YXJzJTIwc2hpcHxlbnwwfHwwfHx8MA%3D%3D', Colors.blueAccent, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const StarshipsScreen()))),
+                  _buildHudCard("Atlas Planet", "Systemy Zewnętrznych Rubieży", 'https://images.unsplash.com/photo-1762441112136-4dfc6edf58e8?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c3RhciUyMHdhcnMlMjBwbGFuZXR8ZW58MHx8MHx8fDA%3D', const Color(0xFFFFE81F), () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PlanetsScreen()))),
+                  _buildHudCard("Tajne Archiwa", "Zapisane dane offline", 'https://images.unsplash.com/photo-1623476408624-721c9185d569?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3RhciUyMHdhcnMlMjBwbGFuZXR8ZW58MHx8MHx8fDA%3D', Colors.greenAccent, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoritesScreen()))),
                 ],
               ),
             ),
@@ -382,28 +343,21 @@ class MainDashboard extends StatelessWidget {
     );
   }
 
-  // Funkcja budująca pojedynczą interaktywną kartę
-  Widget _buildHudCard({required String title, required String subtitle, required String imageUrl, required Color glowColor, required VoidCallback onTap}) {
+  Widget _buildHudCard(String title, String subtitle, String imageUrl, Color glowColor, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 160,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: glowColor.withOpacity(0.25),
-              blurRadius: 20,
-              spreadRadius: -5,
-            ),
-          ],
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: glowColor.withOpacity(0.5), width: 1.5),
           image: DecorationImage(
             image: NetworkImage(imageUrl),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
+            alignment: Alignment.topCenter,
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
           ),
-          border: Border.all(color: glowColor.withOpacity(0.7), width: 2),
         ),
+
         child: Stack(
           children: [
             Positioned(
@@ -419,6 +373,7 @@ class MainDashboard extends StatelessWidget {
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1.5,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 4)],
                     ),
                   ),
                   const SizedBox(height: 4),

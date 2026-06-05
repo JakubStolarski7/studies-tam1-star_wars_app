@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/planet.dart';
 import '../services/api_service.dart';
 import 'planet_details_screen.dart';
+import '../services/analytics_service.dart';
+
 
 class PlanetsScreen extends StatefulWidget {
   const PlanetsScreen({super.key});
@@ -13,11 +15,13 @@ class PlanetsScreen extends StatefulWidget {
 class _PlanetsScreenState extends State<PlanetsScreen> {
   late Future<List<Planet>> _planetsFuture;
   final ApiService _apiService = ApiService();
+  final AnalyticsService _analytics = AnalyticsService();
 
   @override
   void initState() {
     super.initState();
     _fetchData();
+    _analytics.logViewCategory('planets');
   }
 
   void _fetchData() {
@@ -56,6 +60,7 @@ class _PlanetsScreenState extends State<PlanetsScreen> {
             color: const Color(0xFFFFE81F),
             backgroundColor: Colors.black,
             onRefresh: () async {
+              _analytics.logManualRefresh('planets');
               _fetchData();
               await _planetsFuture;
             },

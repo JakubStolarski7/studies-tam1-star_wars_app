@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/db_service.dart';
+import '../services/analytics_service.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -10,12 +11,14 @@ class FavoritesScreen extends StatefulWidget {
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
   final DbService _dbService = DbService();
+  final AnalyticsService _analytics = AnalyticsService();
   List<Map<dynamic, dynamic>> _favorites = [];
 
   @override
   void initState() {
     super.initState();
     _loadFavorites();
+    _analytics.logViewCategory('favorites');
   }
 
   void _loadFavorites() {
@@ -89,6 +92,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
                 onPressed: () {
                   _dbService.toggleFavorite(uid: item['uid'], name: item['name'], type: item['type']);
+
+                  _analytics.logToggleFavorite(item['name'], item['type'], false);
+
                   _loadFavorites();
 
                   ScaffoldMessenger.of(context).showSnackBar(

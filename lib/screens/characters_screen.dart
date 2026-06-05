@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/character.dart';
 import '../services/api_service.dart';
 import 'character_details_screen.dart';
+import '../services/analytics_service.dart';
+
 
 class CharactersScreen extends StatefulWidget {
   const CharactersScreen({super.key});
@@ -13,11 +15,13 @@ class CharactersScreen extends StatefulWidget {
 class _CharactersScreenState extends State<CharactersScreen> {
   late Future<List<Character>> _charactersFuture;
   final ApiService _apiService = ApiService();
+  final AnalyticsService _analytics = AnalyticsService();
 
   @override
   void initState() {
     super.initState();
     _fetchData();
+    _analytics.logViewCategory('characters');
   }
 
   void _fetchData() {
@@ -89,6 +93,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
             color: Colors.redAccent,
             backgroundColor: Colors.black,
             onRefresh: () async {
+              _analytics.logManualRefresh('characters');
               _fetchData();
               await _charactersFuture;
             },

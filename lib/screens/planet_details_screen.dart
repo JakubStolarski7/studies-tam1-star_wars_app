@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/planet_details.dart';
 import '../services/api_service.dart';
 import '../services/db_service.dart';
+import '../services/analytics_service.dart';
 
 class PlanetDetailsScreen extends StatefulWidget {
   final String uid;
@@ -17,6 +18,7 @@ class _PlanetDetailsScreenState extends State<PlanetDetailsScreen> {
   late Future<PlanetDetails> _detailsFuture;
   final ApiService _apiService = ApiService();
   final DbService _dbService = DbService();
+  final AnalyticsService _analytics = AnalyticsService();
   bool _isFavorite = false;
 
   @override
@@ -78,6 +80,8 @@ class _PlanetDetailsScreenState extends State<PlanetDetailsScreen> {
             _isFavorite = !_isFavorite;
           });
 
+          _analytics.logToggleFavorite(widget.name, 'planet', _isFavorite);
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -89,7 +93,7 @@ class _PlanetDetailsScreenState extends State<PlanetDetailsScreen> {
             ),
           );
         },
-        child: Icon(_isFavorite ? Icons.star : Icons.star_border),
+        child: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/db_service.dart';
 import '../services/analytics_service.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -39,6 +40,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           preferredSize: const Size.fromHeight(1.0),
           child: Container(color: Colors.greenAccent.withOpacity(0.3), height: 1.0),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.bug_report, color: Colors.redAccent),
+            onPressed: () {
+              FirebaseCrashlytics.instance.crash();
+            },
+          )
+        ]
       ),
       body: _favorites.isEmpty
           ? const Center(

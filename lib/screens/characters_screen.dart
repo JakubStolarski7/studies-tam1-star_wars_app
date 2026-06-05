@@ -108,40 +108,11 @@ class _CharactersScreenState extends State<CharactersScreen> {
                   margin: const EdgeInsets.only(bottom: 12),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    leading: Hero(
-                      tag: 'hero-char-${char.uid}',
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.redAccent, width: 1),
-                        ),
-                        child: ClipOval(
-                          child: Image.network(
-                            'https://images.weserv.nl/?url=starwars-visualguide.com/assets/img/characters/${char.uid}.jpg',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.person, color: Colors.white54),
-                          ),
-                        ),
-                      ),
-                    ),
-                    title: Text(
-                      char.name.toUpperCase(),
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
+                    title: Text(char.name.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
                     subtitle: Text('ID Rekordu: ${char.uid}', style: const TextStyle(color: Colors.white54)),
                     trailing: const Icon(Icons.arrow_forward_ios, color: Colors.redAccent, size: 18),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CharacterDetailsScreen(
-                            uid: char.uid,
-                            name: char.name,
-                          ),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterDetailsScreen(uid: char.uid, name: char.name)));
                     },
                   ),
                 );

@@ -83,15 +83,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              leading: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.greenAccent.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.greenAccent, width: 1),
-                ),
-                child: Icon(iconData, color: Colors.greenAccent),
-              ),
               title: Text(item['name'].toString().toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
               subtitle: Text('$typeLabel (ID: ${item['uid']})', style: const TextStyle(color: Colors.white54)),
               trailing: IconButton(

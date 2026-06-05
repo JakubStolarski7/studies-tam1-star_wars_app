@@ -75,20 +75,6 @@ class _PlanetsScreenState extends State<PlanetsScreen> {
                   margin: const EdgeInsets.only(bottom: 12),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    leading: Hero(
-                      tag: 'hero-planet-${planet.uid}',
-                      child: Container(
-                        width: 50, height: 50,
-                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: const Color(0xFFFFE81F), width: 1)),
-                        child: ClipOval(
-                          child: Image.network(
-                            'https://images.weserv.nl/?url=starwars-visualguide.com/assets/img/planets/${planet.uid}.jpg',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.public, color: Colors.white54),
-                          ),
-                        ),
-                      ),
-                    ),
                     title: Text(planet.name.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
                     subtitle: Text('ID Rekordu: ${planet.uid}', style: const TextStyle(color: Colors.white54)),
                     trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFFFFE81F), size: 18),

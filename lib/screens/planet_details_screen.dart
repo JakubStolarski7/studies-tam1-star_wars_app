@@ -57,30 +57,6 @@ class _PlanetDetailsScreenState extends State<PlanetDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Hero(
-                    tag: 'hero-planet-${widget.uid}',
-                    child: Container(
-                      width: 250, height: 250,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [BoxShadow(color: const Color(0xFFFFE81F).withOpacity(0.3), blurRadius: 20, spreadRadius: 2)],
-                        border: Border.all(color: const Color(0xFFFFE81F).withOpacity(0.8), width: 2),
-                      ),
-                      child: ClipOval(
-                        child: Image.network(
-                          'https://images.weserv.nl/?url=starwars-visualguide.com/assets/img/planets/${widget.uid}.jpg',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Container(
-                            color: const Color(0xFF111111),
-                            child: const Icon(Icons.public_off, size: 80, color: Colors.white54),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
                 const Text("DANE PLANETARNE", style: TextStyle(color: Color(0xFFFFE81F), fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2.0)),
                 const SizedBox(height: 15),
                 _buildInfoRow("Klimat", details.climate),

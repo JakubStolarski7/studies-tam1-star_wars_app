@@ -21,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   IntroPhase _currentPhase = IntroPhase.ready;
   bool _blueTextVisible = false;
   bool _readyButtonVisible = true;
+  bool _isSkipped = false;
 
   late AnimationController _logoController;
   late Animation<double> _logoScale;
@@ -86,19 +87,25 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   Future<void> _startIntroSequence() async {
     setState(() => _blueTextVisible = true);
     await Future.delayed(const Duration(seconds: 4));
+    if (_isSkipped) return;
+
     setState(() => _blueTextVisible = false);
     await Future.delayed(const Duration(milliseconds: 1500));
+    if (_isSkipped) return;
 
     setState(() => _currentPhase = IntroPhase.logo);
     _logoController.forward();
     _setupAudio();
 
     await Future.delayed(const Duration(milliseconds: 6500));
+    if(_isSkipped) return;
 
     setState(() => _currentPhase = IntroPhase.crawl);
     _crawlController.forward();
 
     await Future.delayed(const Duration(seconds: 35));
+    if(_isSkipped) return;
+
     setState(() => _currentPhase = IntroPhase.panDown);
     _panDownController.forward();
   }
@@ -135,21 +142,22 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     });
   }
 
-  void _skipIntro() {
-    _logoController.stop();
-    _crawlController.stop();
-    _panDownController.forward(from: 1.0);
-
+  Future<void> _skipIntro() async {
     _volumeTimer?.cancel();
     _fadeTimer?.cancel();
+    _logoController.stop();
+    _crawlController.stop();
 
-    _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    _audioPlayer.setVolume(0.3);
-    _audioPlayer.play(AssetSource('loop.mp3'));
+    await _audioPlayer.stop();
+    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+    await _audioPlayer.setVolume(0.3);
+    await _audioPlayer.play(AssetSource('loop.mp3'));
 
     setState(() {
+      _isSkipped = true;
       _currentPhase = IntroPhase.panDown;
     });
+    _panDownController.value = 1.0;
   }
 
   @override
@@ -209,7 +217,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             ),
 
           //LOGO
-          if (_currentPhase == IntroPhase.logo || _currentPhase == IntroPhase.crawl || _currentPhase == IntroPhase.panDown)
+          if (!_isSkipped && (_currentPhase == IntroPhase.logo || _currentPhase == IntroPhase.crawl || _currentPhase == IntroPhase.panDown))
             Center(
               child: Opacity(
                 opacity: _logoOpacity.value,
@@ -221,7 +229,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             ),
 
           //NAPISY
-          if (_currentPhase == IntroPhase.crawl || _currentPhase == IntroPhase.panDown)
+          if (!_isSkipped && (_currentPhase == IntroPhase.crawl || _currentPhase == IntroPhase.panDown))
             Positioned.fill(
               child: SlideTransition(
                 position: _crawlPanUp,
@@ -246,7 +254,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
                           child: Text(
-                            "EPIZOD V.0\n\nNadszedł czas na ostateczne\nzaliczenie przedmiotu.\n\nGalaktyka jest w rozsypce, a\npotężne API SWAPI ukrywa w\nsobie kluczowe dane o\nrebeliantach i imperium.\n\nMłody programista musi użyć\npotęgi Fluttera, aby stworzyć\nniezawodny system danych.\n\nJeśli mu się uda, zyska\nupragnioną ocenę i przywróci\nporządek w systemie USOS.\n\nNiech kod będzie z Tobą!",
+                            "EPIZOD X\n\nNadszedł czas na ostateczne\nzaliczenie przedmiotu.\n\nGalaktyka jest w rozsypce, a\npotężne API SWAPI ukrywa w\nsobie kluczowe dane o\nrebeliantach i imperium.\n\nMłody programista musi użyć\npotęgi Fluttera, aby stworzyć\nniezawodny system danych.\n\nJeśli mu się uda, zyska\nupragnioną ocenę i przywróci\nporządek w systemie USOS.\n\nNiech kod będzie z Tobą!",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Color(0xFFFFE81F), fontSize: 44, fontWeight: FontWeight.w900, letterSpacing: 2.0, height: 1.5),
                           ),
@@ -328,7 +336,7 @@ class MainDashboard extends StatelessWidget {
                   _buildHudCard(
                     title: "Baza Postaci",
                     subtitle: "Jedi, Sithowie, Łowcy Nagród",
-                    imageUrl: 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=1000',
+                    imageUrl: 'https://images.unsplash.com/photo-1608346128025-1896b97a6fa7?q=80&w=1000',
                     glowColor: Colors.redAccent,
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const CharactersScreen()));
@@ -338,7 +346,7 @@ class MainDashboard extends StatelessWidget {
                 _buildHudCard(
                   title: "Flota Gwiezdna",
                   subtitle: "Myśliwce i Krążowniki",
-                  imageUrl: 'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=1000',
+                  imageUrl: 'https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=1000',
                   glowColor: Colors.blueAccent,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const StarshipsScreen()));

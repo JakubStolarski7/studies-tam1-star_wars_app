@@ -57,31 +57,6 @@ class _StarshipDetailsScreenState extends State<StarshipDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Hero(
-                    tag: 'hero-starship-${widget.uid}',
-                    child: Container(
-                      width: double.infinity, height: 220,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [BoxShadow(color: Colors.blueAccent.withOpacity(0.3), blurRadius: 20, spreadRadius: 2)],
-                        border: Border.all(color: Colors.blueAccent.withOpacity(0.8), width: 2),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(13),
-                        child: Image.network(
-                          'https://images.weserv.nl/?url=starwars-visualguide.com/assets/img/starships/${widget.uid}.jpg',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Container(
-                            color: const Color(0xFF111111),
-                            child: const Icon(Icons.rocket_launch, size: 80, color: Colors.white54),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
                 const Text("SPECYFIKACJA TECHNICZNA", style: TextStyle(color: Colors.blueAccent, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2.0)),
                 const SizedBox(height: 15),
                 _buildInfoRow("Model", details.model),

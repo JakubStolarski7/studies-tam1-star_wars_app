@@ -75,20 +75,6 @@ class _StarshipsScreenState extends State<StarshipsScreen> {
                   margin: const EdgeInsets.only(bottom: 12),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    leading: Hero(
-                      tag: 'hero-starship-${ship.uid}',
-                      child: Container(
-                        width: 50, height: 50,
-                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.blueAccent, width: 1)),
-                        child: ClipOval(
-                          child: Image.network(
-                            'https://images.weserv.nl/?url=starwars-visualguide.com/assets/img/starships/${ship.uid}.jpg',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => const Icon(Icons.rocket_launch, color: Colors.white54),
-                          ),
-                        ),
-                      ),
-                    ),
                     title: Text(ship.name.toUpperCase(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
                     subtitle: Text('ID Rekordu: ${ship.uid}', style: const TextStyle(color: Colors.white54)),
                     trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blueAccent, size: 18),
